@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# 1. If /var/lib/mysql/mysql doesn't exist, this is the first run → initialize + import schema
+# 1. If /var/lib/mysql/mysql doesn't exist, run one-time initialization & schema import
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "Initializing MySQL data directory..."
   mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
@@ -18,15 +18,18 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "Running schema script (setup.sql)..."
   mysql < /docker-entrypoint-initdb.d/init.sql
 
-  echo "Resetting root password plugin and granting privileges..."
-  #  a) Force root@localhost to use native_password with an empty password
-  mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
-  #  b) Also allow root@'%' (remote) with empty password and all privileges on bookapp
-  mysql -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '';"
-  mysql -e "GRANT ALL PRIVILEGES ON bookapp.* TO 'root'@'%';"
+  echo "Creating dedicated DB user 'appuser' for both localhost and any host..."
+  # a) Create and grant appuser@'localhost'
+  mysql -e "CREATE USER IF NOT EXISTS 'appuser'@'localhost' IDENTIFIED BY 'Euqificap12.';"
+  mysql -e "GRANT ALL PRIVILEGES ON bookapp.* TO 'appuser'@'localhost';"
+
+  # b) Create and grant appuser@'%'
+  mysql -e "CREATE USER IF NOT EXISTS 'appuser'@'%' IDENTIFIED BY 'Euqificap12.';"
+  mysql -e "GRANT ALL PRIVILEGES ON bookapp.* TO 'appuser'@'%';"
+
   mysql -e "FLUSH PRIVILEGES;"
 
-  # Shutdown the temporary server once schema and grants are done
+  # Shutdown the temporary server, schema + user are now in place
   mysqladmin shutdown
 fi
 

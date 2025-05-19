@@ -1,16 +1,16 @@
 RewriteEngine On
 RewriteBase /
 
-# Redirect to HTTPS
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# ── COMMENTED OUT: Redirect to HTTPS (breaks plain-HTTP)
+#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Route all requests to index.php unless file exists
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]
 
-# PHP configuration
+# PHP configuration (optional—tweaks upload/post sizes)
 php_value upload_max_filesize 10M
 php_value post_max_size 10M
 php_value max_execution_time 30
