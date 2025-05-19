@@ -2,7 +2,9 @@ FROM php:8.1-apache
 
 # Install PHP extensions and enable mod_rewrite
 RUN docker-php-ext-install mysqli pdo pdo_mysql \
-    && a2enmod rewrite
+    && a2enmod rewrite headers \
+    && echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+
 
 # Copy the entire app first
 COPY . /var/www/html
