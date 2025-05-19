@@ -6,8 +6,5 @@ services:
     runtime: docker
     dockerfilePath: ./Dockerfile
     plan: starter      # free tier
-    buildCommand: ""   # Dockerfile handles build
-    startCommand: ""   # Dockerfile’s ENTRYPOINT starts MySQL + Apache
-
-# (No "databases:" section needed, since MySQL is bundled in the Dockerfile
-# and setup.sql creates the 'bookapp' schema on first run.)
+    buildCommand: ""   # Dockerfile handles building everything
+    startCommand: ""   # ENTRYPOINT + CMD in Dockerfile start MySQL & Apache
