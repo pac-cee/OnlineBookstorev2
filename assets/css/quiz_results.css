@@ -1,0 +1,42 @@
+/* Quiz Results-specific styles for OnlineBookstore */
+.dashboard-results-card {
+    max-width: 900px;
+    margin: 0 auto 2.5em auto;
+    background: #fff;
+    padding: 2.2em 2em 1.5em 2em;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(42,82,152,0.10);
+}
+.dashboard-results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.1em;
+    font-size: 1em;
+    background: transparent;
+}
+.dashboard-results-table th, .dashboard-results-table td {
+    padding: 0.8em 1.1em;
+    border-bottom: 1px solid #eef0f4;
+    text-align: left;
+}
+.dashboard-results-table th {
+    background: #f4f7fa;
+    font-weight: 700;
+    color: #23263a;
+}
+.dashboard-results-table td {
+    color: #23263a;
+}
+.dashboard-results-table tbody tr:hover {
+    background: #f6faff;
+}
+@media (max-width: 600px) {
+    .dashboard-results-card {
+        padding: 1.2em 0.4em 1em 0.4em;
+    }
+    .dashboard-results-table th, .dashboard-results-table td {
+        padding: 0.6em 0.5em;
+        font-size: 0.97em;
+    }
+}
+/* Add more quiz results-specific styles as needed */

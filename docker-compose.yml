@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: onlinebookstore_app
+    ports:
+      - "8080:80"               # host:container
+    volumes:
+      - ./:/var/www/html        # live‐sync your code into Docker
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: bookapp
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Euqificap12.
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: onlinebookstore_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Euqificap12.
+      MYSQL_DATABASE: bookapp
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

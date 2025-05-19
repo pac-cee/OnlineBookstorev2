@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: onlinebookstore-app
+    runtime: docker
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: onlinebookstore-db
+          property: host
+      - key: DB_USER
+        fromDatabase:
+          name: onlinebookstore-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: onlinebookstore-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: onlinebookstore-db
+          property: database
+    dockerfilePath: ./Dockerfile
+    plan: starter         # free tier
+    buildCommand: ""      # Dockerfile handles build
+    startCommand: ""      # Dockerfile CMD will run apache
+
+databases:
+  - name: onlinebookstore-db
+    plan: starter        # free tier
