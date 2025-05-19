@@ -1,25 +1,31 @@
 FROM php:8.1-apache
 
-# Install PHP extensions and enable mod_rewrite
-RUN docker-php-ext-install mysqli pdo pdo_mysql \
-    && a2enmod rewrite headers \
-    && echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+# Install necessary packages
+RUN apt-get update \
+ && apt-get install -y \
+      default-mysql-server \
+      dos2unix \
+      unzip \
+ && docker-php-ext-install mysqli pdo pdo_mysql \
+ && a2enmod rewrite headers \
+ && echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
+ && rm -rf /var/lib/apt/lists/*
 
-
-# Copy the entire app first
+# Copy application and SQL
 COPY . /var/www/html
 WORKDIR /var/www/html
 
-# Install Composer if composer.json is present, then install deps
-RUN apt-get update \
-    && apt-get install -y unzip \
-    && php -r "copy('https://getcomposer.org/installer','composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && if [ -f composer.json ]; then composer install --no-dev --optimize-autoloader; fi \
-    && rm composer-setup.php
+# Normalize entrypoint, make executable
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN dos2unix /usr/local/bin/docker-entrypoint.sh \
+ && chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Set correct permissions
+# Copy SQL setup for init
+COPY setup.sql /docker-entrypoint-initdb.d/init.sql
+
+# Ensure permissions
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["apache2-foreground"]

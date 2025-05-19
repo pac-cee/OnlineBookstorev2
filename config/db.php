@@ -1,25 +1,21 @@
 <?php
 class Database {
-    private $host;
-    private $username;
-    private $password;
-    private $database;
-    public $conn;
+    private $host     = "localhost";  // or "127.0.0.1" / service name if in compose
+    private $db_name  = "bookapp";
+    private $username = "root";
+    private $password = "";           // <— empty password
+    public  $conn;
 
     public function __construct() {
-        // Use environment variables in production, fallback to local config in development
-        $this->host = getenv('DB_HOST') ?: '127.0.0.1';
-        $this->username = getenv('DB_USER') ?: 'root';
-        $this->password = getenv('DB_PASSWORD') ?: 'Euqificap12.';
-        $this->database = getenv('DB_NAME') ?: 'bookapp';
-
-        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->database);
+        $this->conn = new mysqli(
+            $this->host,
+            $this->username,
+            $this->password,
+            $this->db_name
+        );
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
     }
-
-    public function getConnection() {
-        return $this->conn;
-    }
 }
+?>
