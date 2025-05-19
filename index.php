@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/config/db.php';
 // Add more includes as needed
 ?>
@@ -19,7 +20,7 @@ require_once __DIR__ . '/config/db.php';
     <script src="assets/js/main.js" defer></script>
 </head>
 <body class="fade-in">
-    <?php session_start(); ?>
+
     <nav>
         <a href="index.php" class="active"><i class="fas fa-house"></i> Home</a>
         <a href="views/book_catalog.php"><i class="fas fa-book-open"></i> Book Catalog</a>
