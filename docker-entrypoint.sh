@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-# 1. If /var/lib/mysql/mysql doesn't exist, run one-time initialization & schema import
+# 1. If /var/lib/mysql/mysql doesn't exist, initialize MySQL & import schema, then create appuser
 if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "Initializing MySQL data directory..."
   mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
@@ -9,7 +9,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
   echo "Starting temporary MySQL server to load setup.sql..."
   mysqld_safe --datadir=/var/lib/mysql &
 
-  # Wait for MySQL to be ready
+  # Wait until MySQL is ready (socket open)
   until mysqladmin ping --silent; do
     echo "Waiting for MySQL to start..."
     sleep 1
@@ -29,7 +29,7 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
   mysql -e "FLUSH PRIVILEGES;"
 
-  # Shutdown the temporary server, schema + user are now in place
+  # Shutdown temporary server (schema + user are set up)
   mysqladmin shutdown
 fi
 

@@ -1,10 +1,11 @@
 <?php
 class Database {
-    private $host     = "127.0.0.1";       // TCP to MySQL in same container
+    private $host     = "127.0.0.1";
     private $port     = 3306;
     private $db_name  = "bookapp";
     private $username = "appuser";
-    private $password = "Euqificap12.";    // Password we set in entrypoint
+    private $password = "Euqificap12.";
+
     public  $conn;
 
     public function __construct() {
