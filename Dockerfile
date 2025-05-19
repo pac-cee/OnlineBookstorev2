@@ -1,20 +1,18 @@
-# Use the official PHP image with Apache
 FROM php:8.1-apache
+RUN docker-php-ext-install mysqli pdo pdo_mysql \
+    && a2enmod rewrite
 
-# Install PHP extensions for MySQL
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Install Composer & your PHP deps
+COPY composer.json composer.lock /var/www/html/
+RUN apt-get update \
+ && apt-get install -y unzip \
+ && php -r "copy('https://getcomposer.org/installer','composer-setup.php');" \
+ && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+ && cd /var/www/html \
+ && composer install --no-dev --optimize-autoloader
 
-# Enable Apache rewrite module (if you use .htaccess)
-RUN a2enmod rewrite
-
-# Copy all your app code into the Apache web root
+# Copy rest of app
 COPY . /var/www/html/
-
-# Fix permissions so Apache can serve and write files
 RUN chown -R www-data:www-data /var/www/html
-
-# Expose container port 80 to the outside
 EXPOSE 80
-
-# Run Apache in the foreground
 CMD ["apache2-foreground"]
