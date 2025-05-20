@@ -3,7 +3,7 @@ class Database {
     private $host     = "127.0.0.1";
     private $port     = 3306;
     private $db_name  = "bookapp";
-    private $username = "appuser";
+    private $username = "root";
     private $password = "Euqificap12.";
 
     public  $conn;
@@ -17,7 +17,7 @@ class Database {
             $this->port
         );
         if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
+            die("❌ Connection failed: " . $this->conn->connect_error);
         }
     }
 
