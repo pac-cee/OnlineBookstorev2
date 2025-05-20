@@ -31,22 +31,7 @@ In the digital era, readers and learners require more than just a place to buy b
 ## 5. Diagrams (Data Flow Diagrams)
 **[Draw these diagrams by hand or using a tool, and insert images here when ready.]**
 
-### Guidance for Drawing DFDs:
-- **Context Diagram:** Draw the OnlineBookstore as a single process (circle). Connect it to external entities such as Users (students, teachers, admins), the Database, and Payment Gateway (if implemented) using arrows to represent data flows (e.g., login requests, book orders, quiz submissions).
-- **Level 1 DFD:** Break the system into main processes:
-  - User Registration/Login
-  - Book Browsing & Search
-  - Order Processing
-  - Quiz Management
-  - Audio Streaming
-  - Progress Tracking
-  - Admin/Teacher Management
-  Show data stores (Books, Users, Orders, Progress, Quizzes) as open-ended rectangles. Connect processes and stores with arrows labeled by the type of data transferred.
-- **Tips:**
-  - Use clear, descriptive labels for all entities, processes, and flows.
-  - Use a tool like draw.io, Lucidchart, or even pen & paper for initial drafts.
-
----
+![data_flow_diagram](./images/data_flow_diagram.png)
 
 ## 6. Features (Detailed)
 
