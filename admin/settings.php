@@ -62,7 +62,7 @@ $emailVerify    = $settings['email_verify'] ?? '0';
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">Site Settings</h1>
@@ -92,6 +92,6 @@ $emailVerify    = $settings['email_verify'] ?? '0';
     </form>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 </body>
 </html>

@@ -155,3 +155,18 @@ body {
 .fade-in {
   animation: fadeIn 0.3s ease-out;
 }
+/* assets/css/auth.css */
+.btn-home {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #6c757d;
+  color: #fff;
+  border-radius: 0.25rem;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  transition: background 0.2s ease;
+}
+.btn-home:hover {
+  background: #5a6268;
+}

@@ -1,10 +1,16 @@
 <?php
 // File: includes/functions_admin.php
 
-// 1) Load the DB connection
+// 1) Load the DB connection class
 require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../includes/fpdf/fpdf.php';
+// 2) Place FPDF if you generate PDF reports here.
+//    (We'll leave that require for generatePDF itself.)
+
 session_start();
+
+// 3) Instantiate Database & expose $conn globally
+$db   = new Database();
+$conn = $db->getConnection();
 
 /**
  * redirectIfNotAdmin()
@@ -43,9 +49,10 @@ function verifyPassword($plainPassword, $hash) {
  *  - total_books
  *  - total_users
  *  - total_orders
- *  - total_revenue   (summing order_items.price * order_items.quantity for all orders with status ≠ 'pending')
+ *  - total_revenue
  */
 function getStats() {
+    // pull in our global connection
     global $conn;
     $stats = [];
 
@@ -53,18 +60,17 @@ function getStats() {
     $res = $conn->query("SELECT COUNT(*) AS cnt FROM books");
     $stats['total_books'] = (int) $res->fetch_assoc()['cnt'];
 
-    // 2. Total users (any role)
+    // 2. Total users
     $res = $conn->query("SELECT COUNT(*) AS cnt FROM users");
     $stats['total_users'] = (int) $res->fetch_assoc()['cnt'];
 
-    // 3. Total orders (every row in orders table)
+    // 3. Total orders
     $res = $conn->query("SELECT COUNT(*) AS cnt FROM orders");
     $stats['total_orders'] = (int) $res->fetch_assoc()['cnt'];
 
-    // 4. Total revenue: sum of (order_items.price * order_items.quantity)
-    //    for orders whose status is NOT 'pending'.
+    // 4. Total revenue
     $sql = "
-      SELECT IFNULL(SUM(oi.price * oi.quantity), 0) AS revenue
+      SELECT IFNULL(SUM(oi.price * oi.quantity),0) AS revenue
       FROM orders o
       JOIN order_items oi ON o.id = oi.order_id
       WHERE o.status != 'pending'
@@ -76,9 +82,8 @@ function getStats() {
 }
 
 /**
- * getLowStockBooks($threshold = 5): mysqli_result
- * -----------------------------------------------
- * Returns a result set of books whose stock_quantity < $threshold.
+ * getLowStockBooks(): mysqli_result
+ * ---------------------------------
  */
 function getLowStockBooks($threshold = 5) {
     global $conn;
@@ -96,29 +101,21 @@ function getLowStockBooks($threshold = 5) {
 /**
  * getPendingOrders(): mysqli_result
  * ---------------------------------
- * Returns orders with status = 'pending', most recent first.
  */
 function getPendingOrders() {
     global $conn;
     $sql = "
-      SELECT o.id, o.user_id, o.order_date
-      FROM orders o
-      WHERE o.status = 'pending'
-      ORDER BY o.order_date DESC
+      SELECT id, user_id, order_date
+      FROM orders
+      WHERE status = 'pending'
+      ORDER BY order_date DESC
     ";
     return $conn->query($sql);
 }
 
 /**
- * generatePDF($title, $columns, $dataRows, $outputName)
- * -----------------------------------------------------
- * A minimal FPDF‐based generator of a simple tabular PDF.
- *   - $title: Report title string
- *   - $columns: array of column‐header strings
- *   - $dataRows: array of rows, each row itself an indexed array of cell values
- *   - $outputName: filename for download (e.g. 'report.pdf')
- *
- * You must have placed FPDF (fpdf.php) under /includes/fpdf/.
+ * generatePDF(...)
+ * ----------------
  */
 function generatePDF($title, $columns, $dataRows, $outputName = 'report.pdf') {
     // Load FPDF
@@ -126,30 +123,27 @@ function generatePDF($title, $columns, $dataRows, $outputName = 'report.pdf') {
 
     $pdf = new FPDF();
     $pdf->AddPage();
-    $pdf->SetFont('Arial', 'B', 16);
-    // Title
-    $pdf->Cell(0, 10, $title, 0, 1, 'C');
+    $pdf->SetFont('Arial','B',16);
+    $pdf->Cell(0,10,$title,0,1,'C');
     $pdf->Ln(5);
 
-    // Header Row
-    $pdf->SetFont('Arial', 'B', 12);
-    $colWidth = (int)(180 / count($columns)); // distribute across page width (approx)
+    // Header
+    $pdf->SetFont('Arial','B',12);
+    $colW = (int)(180/count($columns));
     foreach ($columns as $col) {
-        $pdf->Cell($colWidth, 7, iconv('UTF-8', 'ISO-8859-1', $col), 1, 0, 'C');
+        $pdf->Cell($colW,7,iconv('UTF-8','ISO-8859-1',$col),1,0,'C');
     }
     $pdf->Ln();
 
-    // Data Rows
-    $pdf->SetFont('Arial', '', 11);
+    // Rows
+    $pdf->SetFont('Arial','',11);
     foreach ($dataRows as $row) {
         foreach ($row as $cell) {
-            $cellText = (string)$cell;
-            $pdf->Cell($colWidth, 6, iconv('UTF-8', 'ISO-8859-1', $cellText), 1, 0, 'C');
+            $pdf->Cell($colW,6,iconv('UTF-8','ISO-8859-1',(string)$cell),1,0,'C');
         }
         $pdf->Ln();
     }
 
-    // Output as download
-    $pdf->Output('D', $outputName);
+    $pdf->Output('D',$outputName);
     exit;
 }

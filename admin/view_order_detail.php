@@ -47,7 +47,7 @@ $resItems = $stmt2->get_result();
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">Order #<?= $orderInfo['id'] ?> Details</h1>
@@ -101,6 +101,6 @@ $resItems = $stmt2->get_result();
     <a href="view_orders.php" class="btn-admin">← Back to Orders</a>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 </body>
 </html>

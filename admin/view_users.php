@@ -97,7 +97,7 @@ $resUsers = $conn->query($sql);
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">All Users</h1>
@@ -183,7 +183,7 @@ $resUsers = $conn->query($sql);
     </div>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 
   <script>
     // Close modal when pressing Escape

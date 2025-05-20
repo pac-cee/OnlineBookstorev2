@@ -78,7 +78,7 @@ $resUsers = $conn->query("SELECT id, username FROM users ORDER BY username ASC")
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">All Orders</h1>
@@ -176,6 +176,6 @@ $resUsers = $conn->query("SELECT id, username FROM users ORDER BY username ASC")
     </table>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 </body>
 </html>

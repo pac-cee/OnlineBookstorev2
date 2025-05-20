@@ -43,7 +43,7 @@ $resBooks = $conn->query($sql);
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">All Books</h1>
@@ -97,6 +97,6 @@ $resBooks = $conn->query($sql);
     </table>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 </body>
 </html>

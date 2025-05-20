@@ -140,7 +140,7 @@ if ($type === 'users') {
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">Generate PDF Report</h1>
@@ -198,7 +198,7 @@ if ($type === 'users') {
     </form>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 
   <script>
     function toggleFilters() {

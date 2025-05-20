@@ -106,6 +106,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <p>Don't have an account? <a href="register.php">Register here</a></p>
       <p><a href="forgot-password.php"><i class="fas fa-key"></i> Forgot Password?</a></p>
     </div>
+    <div class="home-link" style="text-align:center; margin-bottom:1rem;">
+  <a href="/index.php" class="btn-home">
+    <i class="fas fa-home"></i> Home
+  </a>
+</div>
+    <div class="admin-login-link" style="text-align:center;">
+      <p>Are you an admin? <a href="../admin/admin_login.php">Login here</a></p>
+    </div>
   </main>
 
   <?php include __DIR__ . '/../views/includes/footer.php'; ?>

@@ -18,7 +18,7 @@ $pendingOrders = getPendingOrders();
   <link rel="stylesheet" href="/admin/css/admin.css">
 </head>
 <body>
-  <?php include __DIR__ . '/../includes/header.php'; ?>
+  <?php include __DIR__ . '/../views/includes/header.php'; ?>
 
   <div class="admin-container">
     <h1 class="admin-title">Admin Dashboard</h1>
@@ -81,9 +81,10 @@ $pendingOrders = getPendingOrders();
       <a href="view_orders.php" class="btn-admin">🛒 View All Orders</a>
       <a href="generate_report.php" class="btn-admin">📄 Generate Report</a>
       <a href="settings.php" class="btn-admin">⚙️ Settings</a>
+      <a href="../index.php" class="btn-admin">🏠 Return to Homepage</a>
     </div>
   </div>
 
-  <?php include __DIR__ . '/../includes/footer.php'; ?>
+  <?php include __DIR__ . '/../views/includes/footer.php'; ?>
 </body>
 </html>
