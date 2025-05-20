@@ -115,3 +115,129 @@
 .auth-links a:hover {
     text-decoration: underline;
 }
+/* assets/css/auth.css */
+
+/* Container resets */
+body.auth-page {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Shared box for both user and admin login */
+.auth-container,
+.login-container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Headings */
+.auth-container h1,
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #343a40;
+}
+
+/* Form group */
+.form-group {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+/* Labels */
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+/* Inputs */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  color: #495057;
+}
+
+/* Eye / lock icon inside password field */
+.password-input-group {
+  position: relative;
+}
+
+.password-input-group .icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+/* Submit buttons */
+.auth-button,
+.login-container button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-button i,
+.login-container button i {
+  margin-left: 0.5rem;
+}
+
+/* Links under the form */
+.auth-links,
+.login-container .auth-links {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.auth-links a,
+.login-container .auth-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+/* Error / success messages */
+.auth-message,
+.error-msg {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.3rem;
+  font-size: 0.95rem;
+}
+
+.auth-message.error,
+.error-msg {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.auth-message.success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
