@@ -36,69 +36,157 @@ $conn->close();
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <script src="/assets/js/main.js" defer></script>
     <style>
-        /* Only keep unique dashboard layout tweaks, rely on styles.css for shared UI */
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: var(--bg);
-            min-height: 100vh;
-            padding-bottom: 2em;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(42,82,152,0.10);
-        }
-        .dashboard-hero-img img {
-            max-width: 160px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(42,82,152,0.09);
-        }
-        .dashboard-insights {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.2em;
-            margin-bottom: 2em;
-        }
-        .insight-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(42,82,152,0.08);
-            padding: 1.4em 1.1em 1.2em 1.1em;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .insight-title {
-            font-size: 1em;
-            color: #6c7a89;
-            margin-bottom: 0.4em;
-            font-weight: 600;
-        }
-        .insight-value {
-            font-size: 2em;
-            font-weight: 700;
-            color: var(--text);
-        }
-        .dashboard-hero .hero-text h1 { font-size: 2em; font-weight: 700; color: #23263a; margin-bottom: 0.4em; }
-        .dashboard-hero .hero-text .subtitle { font-size: 1.1em; color: #6c7a89; margin-bottom: 1.2em; }
-        .quick-actions { display: flex; gap: 1em; flex-wrap: wrap; }
-        .quick-btn { display: inline-flex; align-items: center; gap: 0.5em; background: #2a5298; color: #fff; padding: 0.65em 1.2em; border-radius: 8px; text-decoration: none; font-weight: 500; transition: background 0.2s; }
-        .quick-btn:hover { background: #1c3561; }
-        .dashboard-hero-img { flex: 1; display: flex; justify-content: flex-end; }
-        .dashboard-hero-img img { max-width: 160px; border-radius: 10px; box-shadow: 0 2px 8px rgba(42,82,152,0.09); }
-        .dashboard-insights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2em; margin-bottom: 2em; }
-        .insight-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(42,82,152,0.08); padding: 1.4em 1.1em 1.2em 1.1em; display: flex; flex-direction: column; align-items: flex-start; }
-        .insight-title { font-size: 1em; color: #6c7a89; margin-bottom: 0.4em; font-weight: 600; }
-        .insight-value { font-size: 2em; font-weight: 700; color: #23263a; }
-        @media (max-width: 900px) {
-            .dashboard-insights { grid-template-columns: repeat(2, 1fr); }
-            .dashboard-hero { flex-direction: column; gap: 1.5em; padding: 1.2em 0.9em 1.2em 0.9em; }
-            .dashboard-hero-img { justify-content: center; }
-        }
-        @media (max-width: 600px) {
-            .dashboard-insights { grid-template-columns: 1fr; }
-            .dashboard { padding: 0.4em; }
-            .main-nav { flex-direction: column; gap: 1em; padding: 1em 0.7em; }
-            .dashboard-hero { padding: 1em 0.4em 1em 0.4em; }
-        }
+.dashboard-book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.dashboard-book-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    border: 1px solid #eee;
+}
+
+.dashboard-book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(42,82,152,0.15);
+}
+
+.book-card-img {
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.dashboard-book-card:hover .book-card-img img {
+    transform: scale(1.08);
+}
+
+.book-card-content {
+    padding: 1.5rem;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.95), #fff);
+    flex: 1;
+}
+
+.book-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2a5298;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.dashboard-book-card:hover .book-title {
+    color: #1c3561;
+}
+
+.book-author {
+    color: #6c7a89;
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+}
+
+.book-price {
+    font-weight: 700;
+    color: #2a5298;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: #f0f4f8;
+    border-radius: 20px;
+}
+
+.book-desc {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.actions {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.quick-btn {
+    background: #2a5298;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.quick-btn:hover {
+    background: #1c3561;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #f0f4f8;
+    color: #2a5298;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #dbe4f0;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .dashboard-book-list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .book-card-img {
+        height: 250px;
+    }
+}
     </style>
     <script defer src="../assets/js/dashboard_custom.js"></script>
 </head>
@@ -134,32 +222,42 @@ $conn->close();
             <div class="dashboard-book-list">
                 <?php foreach ($books as $book): ?>
                     <div class="dashboard-book-card">
-                        <div class="book-card-img">
-                            <?php if (!empty($book['cover_image'])): ?>
-                                <img src="../assets/images/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Book Cover">
-                            <?php else: ?>
-                                <img src="../assets/images/default_cover.png" alt="Book Cover">
-                            <?php endif; ?>
-                        </div>
-                        <div class="book-card-content">
-                            <h3 class="book-title"><?php echo htmlspecialchars($book['title']); ?></h3>
-                            <p class="book-author">by <?php echo htmlspecialchars($book['author']); ?></p>
-                            <div class="book-price">$<?php echo htmlspecialchars($book['price']); ?></div>
-                            <p class="book-desc"><?php echo nl2br(htmlspecialchars($book['description'])); ?></p>
-                            <div class="actions">
-    <form method="POST" action="order_book.php">
-        <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
-        <button type="submit" class="quick-btn">Buy/Order</button>
-    </form>
-    <?php if (!empty($book['read_file'])): ?>
-        <a href="../books/<?php echo htmlspecialchars($book['read_file']); ?>" class="btn-secondary" target="_blank">Read Online</a>
-    <?php endif; ?>
-    <?php if (!empty($book['audio_file'])): ?>
-        <a href="../audio/<?php echo htmlspecialchars($book['audio_file']); ?>" class="btn-secondary" target="_blank">Listen</a>
-    <?php endif; ?>
-</div>
-                        </div>
-                    </div>
+            <div class="book-card-img">
+                <?php if (!empty($book['cover_image'])): ?>
+                    <img src="<?php echo htmlspecialchars(strpos($book['cover_image'], 'http') === 0 ? 
+                        $book['cover_image'] : '../assets/images/' . $book['cover_image']); ?>" 
+                        alt="<?php echo htmlspecialchars($book['title']); ?> Cover">
+                <?php else: ?>
+                    <img src="../assets/images/default_cover.png" alt="Default Cover">
+                <?php endif; ?>
+            </div>
+            <div class="book-card-content">
+                <h3 class="book-title"><?php echo htmlspecialchars($book['title']); ?></h3>
+                <p class="book-author">by <?php echo htmlspecialchars($book['author']); ?></p>
+                <div class="book-price">$<?php echo number_format($book['price'], 2); ?></div>
+                <p class="book-desc"><?php echo nl2br(htmlspecialchars($book['description'])); ?></p>
+                <div class="actions">
+                    <form method="POST" action="order_book.php" style="flex: 1;">
+                        <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
+                        <button type="submit" class="quick-btn">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </button>
+                    </form>
+                    <?php if (!empty($book['read_file'])): ?>
+                        <a href="../books/<?php echo htmlspecialchars($book['read_file']); ?>" 
+                           class="btn-secondary" target="_blank">
+                            <i class="fas fa-book-open"></i> Read
+                        </a>
+                    <?php endif; ?>
+                    <?php if (!empty($book['audio_file'])): ?>
+                        <a href="../audio/<?php echo htmlspecialchars($book['audio_file']); ?>" 
+                           class="btn-secondary" target="_blank">
+                            <i class="fas fa-headphones"></i> Listen
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

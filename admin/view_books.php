@@ -7,11 +7,42 @@ redirectIfNotAdmin();
 // Handle Delete action if present
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
-    $stmt = $conn->prepare("DELETE FROM books WHERE id = ?");
-    $stmt->bind_param('i', $delete_id);
-    $stmt->execute();
-    header('Location: view_books.php');
-    exit;
+    
+    try {
+        // First check if book has any orders
+        $check_stmt = $conn->prepare("SELECT COUNT(*) as order_count FROM orders WHERE book_id = ?");
+        $check_stmt->bind_param('i', $delete_id);
+        $check_stmt->execute();
+        $result = $check_stmt->get_result();
+        $has_orders = $result->fetch_assoc()['order_count'] > 0;
+        $check_stmt->close();
+
+        if ($has_orders) {
+            // Book has orders - set as inactive
+            $update_stmt = $conn->prepare("UPDATE books SET active = 0 WHERE id = ?");
+            if (!$update_stmt) {
+                throw new Exception("Error preparing update statement: " . $conn->error);
+            }
+            $update_stmt->bind_param('i', $delete_id);
+            $update_stmt->execute();
+            $update_stmt->close();
+            $_SESSION['message'] = "Book has existing orders. Marked as inactive instead of deleting.";
+        } else {
+            // No orders - safe to delete
+            $delete_stmt = $conn->prepare("DELETE FROM books WHERE id = ?");
+            $delete_stmt->bind_param('i', $delete_id);
+            $delete_stmt->execute();
+            $delete_stmt->close();
+            $_SESSION['message'] = "Book deleted successfully.";
+        }
+        
+        header('Location: view_books.php');
+        exit;
+    } catch (Exception $e) {
+        $_SESSION['error'] = "Error: " . $e->getMessage();
+        header('Location: view_books.php');
+        exit;
+    }
 }
 
 // Search/filter
@@ -22,10 +53,11 @@ if (!empty($_GET['search'])) {
     $whereClause = "WHERE b.title LIKE '%$search%' OR b.author LIKE '%$search%'";
 }
 
-// Fetch books
+// Modify the books query to include active status
 $sql = "
   SELECT 
-    b.id, b.title, b.author, c.name AS category, b.price, b.stock_quantity
+    b.id, b.title, b.author, c.name AS category, 
+    b.price, b.stock_quantity, b.active
   FROM books b
   LEFT JOIN categories c ON b.category_id = c.id
   $whereClause
@@ -64,6 +96,7 @@ $resBooks = $conn->query($sql);
           <th>Category</th>
           <th>Price ($)</th>
           <th>Stock</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -80,6 +113,9 @@ $resBooks = $conn->query($sql);
                 <?= intval($book['stock_quantity']) ?>
               </td>
               <td>
+                <?= $book['active'] ? 'Active' : 'Inactive' ?>
+              </td>
+              <td>
                 <a href="add_book.php?edit_id=<?= $book['id'] ?>" class="btn-admin">Edit</a>
                 <a href="view_books.php?delete_id=<?= $book['id'] ?>" class="btn-admin" 
                    onclick="return confirm('Delete this book?');">
@@ -90,7 +126,7 @@ $resBooks = $conn->query($sql);
           <?php endwhile; ?>
         <?php else: ?>
           <tr>
-            <td colspan="7">No books found.</td>
+            <td colspan="8">No books found.</td>
           </tr>
         <?php endif; ?>
       </tbody>
