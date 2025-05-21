@@ -3,9 +3,9 @@
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
-    background: var(--card-bg);
+    background: #fff;
     border-radius: 12px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .quiz-header {
@@ -17,6 +17,13 @@
     color: var(--primary);
     font-size: 2rem;
     margin-bottom: 1rem;
+}
+
+.quiz-description {
+    color: #666;
+    margin: 1rem 0 2rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 .quiz-progress-bar {

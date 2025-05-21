@@ -123,7 +123,10 @@ $conn->close();
 <body>
     <div class="quiz-container">
         <h2><?php echo htmlspecialchars($quiz['title']); ?></h2>
-        <p><?php echo nl2br(htmlspecialchars($quiz['description'])); ?></p>
+        <?php if (isset($quiz['description']) && !empty($quiz['description'])): ?>
+            <p class="quiz-description"><?php echo nl2br(htmlspecialchars($quiz['description'])); ?></p>
+        <?php endif; ?>
+        
         <?php if (empty($questions)): ?>
             <p>No questions found for this quiz.</p>
             <a href="quiz.php">&larr; Back to Quizzes</a>
